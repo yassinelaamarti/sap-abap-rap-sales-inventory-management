@@ -1,0 +1,44 @@
+@Metadata.layer: #CUSTOMER
+
+@UI.headerInfo: {
+  typeName: 'Item',
+  typeNamePlural: 'Items',
+  title: { type: #STANDARD, value: 'ProductId' }
+}
+
+annotate entity ZSIM_C_SALESORDERITEM with
+{
+  @UI.facet: [
+    { id: 'ItemGeneral', purpose: #STANDARD, type: #IDENTIFICATION_REFERENCE,
+      label: 'Item', position: 10 }
+  ]
+
+  @UI.hidden: true
+  OrderId;
+
+  @UI.lineItem:       [ { position: 10, label: 'Item' } ]
+  @UI.identification: [ { position: 10, label: 'Item' } ]
+  ItemNumber;
+
+  @UI.lineItem:       [ { position: 20, label: 'Product' } ]
+  @UI.identification: [ { position: 20, label: 'Product' } ]
+  @Consumption.valueHelpDefinition: [ {
+    entity: { name: 'ZSIM_I_PRODUCTPLANT_VH', element: 'ProductId' },
+    additionalBinding: [ { localElement: 'PlantId', element: 'PlantId', usage: #FILTER } ]
+  } ]
+  ProductId;
+
+  @UI.hidden: true
+  PlantId;
+
+  @UI.lineItem:       [ { position: 30, label: 'Quantity' } ]
+  @UI.identification: [ { position: 30, label: 'Quantity' } ]
+  Quantity;
+
+  @UI.lineItem:       [ { position: 40, label: 'Net Amount' } ]
+  @UI.identification: [ { position: 40, label: 'Net Amount' } ]
+  NetAmount;
+
+  @UI.hidden: true
+  Currency;
+}

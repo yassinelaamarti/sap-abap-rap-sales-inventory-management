@@ -1,0 +1,53 @@
+@Metadata.layer: #CUSTOMER
+
+@UI.headerInfo: {
+  typeName: 'Movement',
+  typeNamePlural: 'Movements',
+  title: { type: #STANDARD, value: 'MovementType' }
+}
+
+@UI.presentationVariant: [ {
+  sortOrder: [ { by: 'CreatedAt', direction: #DESC } ],
+  visualizations: [ { type: #AS_LINEITEM } ]
+} ]
+
+annotate entity ZSIM_C_STOCKMOVEMENT with
+{
+  @UI.facet: [
+    { id: 'MovementGeneral', purpose: #STANDARD, type: #IDENTIFICATION_REFERENCE,
+      label: 'Movement', position: 10 }
+  ]
+
+  @UI.hidden: true
+  MovementId;
+
+  @UI.hidden: true
+  ProductId;
+
+  @UI.hidden: true
+  PlantId;
+
+  @UI.lineItem:       [ { position: 10, label: 'Date' } ]
+  @UI.identification: [ { position: 10, label: 'Date' } ]
+  CreatedAt;
+
+  @UI.lineItem:       [ { position: 20, label: 'Type' } ]
+  @UI.identification: [ { position: 20, label: 'Type' } ]
+  MovementType;
+
+  @UI.lineItem:       [ { position: 30, label: 'Quantity' } ]
+  @UI.identification: [ { position: 30, label: 'Quantity' } ]
+  Quantity;
+
+  @UI.lineItem:       [ { position: 40, label: 'Stock After' } ]
+  @UI.identification: [ { position: 40, label: 'Stock After' } ]
+  StockAfter;
+
+  @UI.lineItem:       [ { position: 50, label: 'Reference' } ]
+  @UI.identification: [ { position: 50, label: 'Reference' } ]
+  Reference;
+
+  @UI.lineItem:       [ { position: 60, label: 'User' } ]
+  @UI.identification: [ { position: 60, label: 'User' } ]
+  CreatedBy;
+}

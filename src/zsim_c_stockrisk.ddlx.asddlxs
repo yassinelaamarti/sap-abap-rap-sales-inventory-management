@@ -1,0 +1,74 @@
+@Metadata.layer: #CUSTOMER
+
+@UI.headerInfo: {
+  typeName: 'Stock Position',
+  typeNamePlural: 'Stock Risk',
+  title:       { type: #STANDARD, value: 'ProductName' },
+  description: { type: #STANDARD, value: 'PlantId' }
+}
+
+@UI.presentationVariant: [ {
+  sortOrder: [
+    { by: 'ShortfallQty',   direction: #DESC },
+    { by: 'AvailableStock', direction: #ASC  }
+  ],
+  visualizations: [ { type: #AS_LINEITEM } ]
+} ]
+
+annotate entity ZSIM_C_STOCKRISK with
+{
+  @EndUserText.label: 'Product'
+  @UI.selectionField: [ { position: 30 } ]
+  ProductId;
+
+  @EndUserText.label: 'Product Name'
+  @UI.lineItem: [ { position: 10, label: 'Product' } ]
+  ProductName;
+
+  @EndUserText.label: 'Plant'
+  @UI.lineItem:       [ { position: 20, label: 'Plant' } ]
+  @UI.selectionField: [ { position: 10 } ]
+  PlantId;
+
+  @EndUserText.label: 'On Hand'
+  @UI.lineItem: [ { position: 30, label: 'On Hand' } ]
+  QuantityOnHand;
+
+  @EndUserText.label: 'Committed'
+  @UI.lineItem: [ { position: 40, label: 'Committed' } ]
+  CommittedQty;
+
+  @EndUserText.label: 'Available'
+  AvailableStock;
+
+  @EndUserText.label: 'Available vs threshold'
+  @UI.dataPoint: {
+    title: 'Available vs threshold',
+    targetValueElement: 'ReorderThreshold',
+    criticality: 'RiskCriticality',
+    visualization: #PROGRESS,
+    valueFormat: { numberOfFractionalDigits: 0 }
+  }
+  @UI.lineItem: [ { type: #AS_DATAPOINT, position: 50, label: 'Available vs threshold' } ]
+  StockLevel;
+
+  @EndUserText.label: 'Reorder Threshold'
+  ReorderThreshold;
+
+  @EndUserText.label: 'Risk Status'
+  @UI.lineItem: [
+    { position: 60, label: 'Risk Status',
+      criticality: 'RiskCriticality', criticalityRepresentation: #WITH_ICON }
+  ]
+  @UI.selectionField: [ { position: 20 } ]
+  RiskStatus;
+
+  @EndUserText.label: 'Shortfall (units)'
+  ShortfallQty;
+
+  @EndUserText.label: 'Coverage vs threshold (%)'
+  CoveragePct;
+
+  @UI.hidden: true
+  RiskCriticality;
+}

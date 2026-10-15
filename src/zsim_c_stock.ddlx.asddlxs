@@ -1,0 +1,43 @@
+@Metadata.layer: #CUSTOMER
+
+@UI.headerInfo: {
+  typeName: 'Stock',
+  typeNamePlural: 'Stock by Plant',
+  title:       { type: #STANDARD, value: 'PlantId' },
+  description: { type: #STANDARD, value: 'ProductId' }
+}
+
+annotate entity ZSIM_C_STOCK with
+{
+  @UI.facet: [
+    { id: 'StockGeneral', purpose: #STANDARD, type: #IDENTIFICATION_REFERENCE,
+      label: 'General', position: 10 },
+    { id: 'Movements', purpose: #STANDARD, type: #LINEITEM_REFERENCE,
+      label: 'Movement History', position: 20, targetElement: '_Movements' }
+  ]
+
+  @UI.lineItem:       [ { position: 10, label: 'Plant' } ]
+  @UI.identification: [ { position: 10, label: 'Plant' } ]
+  PlantId;
+
+  @UI.lineItem:       [ { position: 20, label: 'Quantity on Hand' },
+                        { type: #FOR_ACTION, dataAction: 'receiveStock', label: 'Receive Stock' } ]
+  @UI.identification: [ { position: 20, label: 'Quantity on Hand' },
+                        { type: #FOR_ACTION, dataAction: 'receiveStock', label: 'Receive Stock' } ]
+  QuantityOnHand;
+
+  @UI.lineItem:       [ { position: 30, label: 'Available Stock',
+                          criticality: 'RiskCriticality',
+                          criticalityRepresentation: #WITH_ICON } ]
+  @UI.identification: [ { position: 30, label: 'Available Stock',
+                          criticality: 'RiskCriticality',
+                          criticalityRepresentation: #WITH_ICON } ]
+  AvailableStock;
+
+  @UI.lineItem:       [ { position: 40, label: 'Last Updated' } ]
+  @UI.identification: [ { position: 40, label: 'Last Updated' } ]
+  LastUpdatedAt;
+
+  @UI.hidden: true
+  RiskCriticality;
+}

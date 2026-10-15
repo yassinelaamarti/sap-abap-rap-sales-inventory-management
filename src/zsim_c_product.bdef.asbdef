@@ -1,0 +1,23 @@
+projection;
+strict ( 2 );
+
+define behavior for ZSIM_C_PRODUCT alias Product
+{
+  use association _Stock;
+}
+
+define behavior for ZSIM_C_STOCK alias Stock
+{
+  use update;
+  use action receiveStock;
+
+  use association _Product;
+  use association _Plant;
+  use association _Movements;
+}
+
+define behavior for ZSIM_C_STOCKMOVEMENT alias StockMovement
+{
+  use association _Stock;
+  use association _Product;
+}

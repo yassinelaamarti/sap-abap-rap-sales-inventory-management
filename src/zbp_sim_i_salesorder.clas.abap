@@ -1,0 +1,5 @@
+CLASS zbp_sim_i_salesorder DEFINITION PUBLIC ABSTRACT FINAL FOR BEHAVIOR OF zsim_i_salesorder.
+ENDCLASS.
+
+CLASS zbp_sim_i_salesorder IMPLEMENTATION.
+ENDCLASS.

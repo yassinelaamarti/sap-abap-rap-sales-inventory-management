@@ -1,0 +1,45 @@
+@Metadata.layer: #CUSTOMER
+
+@UI.headerInfo: {
+  typeName: 'Orders by Status',
+  typeNamePlural: 'Orders by Status',
+  title: { type: #STANDARD, value: 'StatusText' }
+}
+
+@UI.presentationVariant: [ {
+  sortOrder: [ { by: 'StatusOrder', direction: #ASC } ],
+  visualizations: [ { type: #AS_LINEITEM } ]
+} ]
+
+annotate entity ZSIM_C_ORDERSTATUSKPI with
+{
+  @EndUserText.label: 'Status Code'
+  @UI.selectionField: [ { position: 10 } ]
+  Status;
+
+  @EndUserText.label: 'Plant'
+  @UI.lineItem:       [ { position: 20, label: 'Plant' } ]
+  @UI.selectionField: [ { position: 20 } ]
+  PlantId;
+
+  @EndUserText.label: 'Status'
+  @UI.lineItem: [ { position: 10, label: 'Status', criticality: 'StatusCriticality' } ]
+  StatusText;
+
+  @EndUserText.label: 'Orders'
+  @UI.lineItem: [ { position: 30, label: 'Orders' } ]
+  OrderCount;
+
+  @EndUserText.label: 'Total Amount'
+  @UI.lineItem: [ { position: 40, label: 'Total Amount' } ]
+  TotalAmount;
+
+  @UI.hidden: true
+  StatusCriticality;
+
+  @UI.hidden: true
+  StatusOrder;
+
+  @UI.hidden: true
+  Currency;
+}

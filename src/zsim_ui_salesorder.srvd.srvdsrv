@@ -1,0 +1,11 @@
+@EndUserText.label: 'Sales Order Service'
+define service ZSIM_UI_SALESORDER {
+  expose ZSIM_C_SALESORDER      as SalesOrder;
+  expose ZSIM_C_SALESORDERITEM  as SalesOrderItem;
+  expose ZSIM_C_PRODUCT         as Product;
+  expose ZSIM_C_STOCK           as Stock;
+  expose ZSIM_C_STOCKMOVEMENT   as StockMovement;
+  expose ZSIM_C_CUSTOMER        as Customer;
+  expose ZSIM_C_PLANT           as Plant;
+  expose ZSIM_I_PRODUCTPLANT_VH as ProductPlantVH;
+}

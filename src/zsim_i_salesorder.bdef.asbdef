@@ -1,0 +1,96 @@
+managed implementation in class zbp_sim_i_salesorder unique;
+strict ( 2 );
+with draft;
+
+define behavior for ZSIM_I_SALESORDER alias SalesOrder
+persistent table zsim_so
+with additional save
+draft table zsim_so_d
+etag master LocalLastChangedAt
+lock master total etag LastChangedAt
+authorization master ( instance )
+early numbering
+{
+  create;
+  update ( features : instance );
+  delete ( features : instance );
+
+  field ( readonly ) OrderId, Status, TotalAmount, Currency,
+                     LocalLastChangedAt, LastChangedAt;
+  field ( mandatory ) CustomerId, PlantId;
+
+  determination setInitialStatus on modify { create; }
+  determination syncItemsPlant   on modify { field PlantId; }
+  determination recalculateTotal on save   { create; field CustomerId, PlantId, OrderDate; }
+
+  validation validateOrderDate on save { create; field OrderDate; }
+
+  action ( features : instance ) confirmOrder result [1] $self;
+  action ( features : instance ) shipOrder    result [1] $self;
+  action ( features : instance ) cancelOrder  result [1] $self;
+
+  draft action ( features : instance ) Edit;
+  draft action Activate optimized;
+  draft action Discard;
+  draft action Resume;
+  draft determine action Prepare
+  {
+    determination recalculateTotal;
+    validation validateOrderDate;
+    validation SalesOrderItem~validateQuantities;
+    validation SalesOrderItem~checkStockAvailability;
+  }
+
+  association _Items { create; with draft; }
+  association _Customer { }
+  association _Plant { }
+
+  mapping for zsim_so
+  {
+    OrderId            = order_id;
+    CustomerId         = customer_id;
+    PlantId            = plant_id;
+    OrderDate          = order_date;
+    Status             = status;
+    TotalAmount        = total_amount;
+    Currency           = currency;
+    LocalLastChangedAt = local_last_changed_at;
+    LastChangedAt      = last_changed_at;
+  }
+}
+
+define behavior for ZSIM_I_SALESORDERITEM alias SalesOrderItem
+persistent table zsim_so_item
+draft table zsim_so_item_d
+lock dependent by _SalesOrder
+authorization dependent by _SalesOrder
+etag dependent by _SalesOrder
+early numbering
+{
+  update;
+  delete;
+
+  field ( readonly ) OrderId, ItemNumber, PlantId, NetAmount, Currency;
+  field ( mandatory ) ProductId, Quantity;
+
+  determination calculateAmounts       on modify { create; field ProductId, Quantity; }
+  determination setItemPlant           on modify { create; }
+  determination recalculateParentTotal on save   { delete; }
+
+  validation validateQuantities     on save { create; field Quantity; }
+  validation checkStockAvailability on save { create; field ProductId, Quantity; }
+
+  association _SalesOrder { with draft; }
+  association _Product { }
+
+  mapping for zsim_so_item
+  {
+    OrderId    = order_id;
+    ItemNumber = item_number;
+    ProductId  = product_id;
+    PlantId    = plant_id;
+    Quantity   = quantity;
+    NetAmount  = net_amount;
+    Currency   = currency;
+  }
+}

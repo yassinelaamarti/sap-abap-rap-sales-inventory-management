@@ -1,0 +1,5 @@
+@EndUserText.label: 'Dashboard Service'
+define service ZSIM_UI_DASHBOARD {
+  expose ZSIM_C_ORDERSTATUSKPI as OrderStatusKpi;
+  expose ZSIM_C_STOCKRISK      as StockRisk;
+}

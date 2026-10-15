@@ -1,0 +1,11 @@
+managed implementation in class zbp_sim_i_plant unique;
+strict ( 2 );
+
+define behavior for ZSIM_I_PLANT alias Plant
+persistent table zsim_plant
+lock master
+authorization master ( instance )
+
+{
+  field ( readonly ) PlantId, PlantName, City, CountryCode;
+}

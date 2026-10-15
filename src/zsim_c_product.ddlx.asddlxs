@@ -1,0 +1,43 @@
+@Metadata.layer: #CUSTOMER
+
+@UI.headerInfo: {
+  typeName: 'Product',
+  typeNamePlural: 'Products',
+  title: { type: #STANDARD, value: 'ProductName' }
+}
+
+annotate entity ZSIM_C_PRODUCT with
+{
+  @UI.facet: [
+    {
+      id: 'General',
+      purpose: #STANDARD,
+      type: #IDENTIFICATION_REFERENCE,
+      label: 'General',
+      position: 10
+    },
+    {
+      id: 'Stock',
+      purpose: #STANDARD,
+      type: #LINEITEM_REFERENCE,
+      label: 'Stock by Plant',
+      position: 20,
+      targetElement: '_Stock'
+    }
+  ]
+
+  @UI.lineItem:       [ { position: 10, label: 'Product' } ]
+  @UI.identification: [ { position: 10, label: 'Product' } ]
+  ProductName;
+
+  @UI.lineItem:       [ { position: 20, label: 'Unit Price' } ]
+  @UI.identification: [ { position: 20, label: 'Unit Price' } ]
+  UnitPrice;
+
+  @UI.lineItem:       [ { position: 30, label: 'Reorder Threshold' } ]
+  @UI.identification: [ { position: 30, label: 'Reorder Threshold' } ]
+  ReorderThreshold;
+
+  @UI.hidden: true
+  Currency;
+}

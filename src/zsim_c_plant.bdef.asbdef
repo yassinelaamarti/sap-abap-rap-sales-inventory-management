@@ -1,0 +1,6 @@
+projection;
+strict ( 2 );
+
+define behavior for ZSIM_C_PLANT alias Plant
+{
+}

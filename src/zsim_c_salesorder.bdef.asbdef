@@ -1,0 +1,32 @@
+projection;
+strict ( 2 );
+use draft;
+
+define behavior for ZSIM_C_SALESORDER alias SalesOrder
+{
+  use create;
+  use update;
+  use delete;
+
+  use action Edit;
+  use action Activate;
+  use action Discard;
+  use action Resume;
+  use action Prepare;
+  use action confirmOrder;
+  use action shipOrder;
+  use action cancelOrder;
+
+  use association _Customer;
+  use association _Plant;
+  use association _Items { create; with draft; }
+}
+
+define behavior for ZSIM_C_SALESORDERITEM alias SalesOrderItem
+{
+  use update;
+  use delete;
+
+  use association _SalesOrder { with draft; }
+  use association _Product;
+}

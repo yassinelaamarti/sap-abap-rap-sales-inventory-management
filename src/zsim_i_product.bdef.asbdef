@@ -1,0 +1,73 @@
+managed implementation in class zbp_sim_i_product unique;
+strict ( 2 );
+
+define behavior for ZSIM_I_PRODUCT alias Product
+persistent table zsim_product
+lock master
+authorization master ( instance )
+{
+  field ( readonly ) ProductId, ProductName, UnitPrice, Currency, ReorderThreshold;
+
+  association _Stock { }
+
+  mapping for zsim_product
+  {
+    ProductId        = product_id;
+    ProductName      = product_name;
+    UnitPrice        = unit_price;
+    Currency         = currency;
+    ReorderThreshold = reorder_threshold;
+  }
+}
+
+define behavior for ZSIM_I_STOCK alias Stock
+persistent table zsim_stock
+lock dependent by _Product
+authorization dependent by _Product
+{
+  update;
+
+  // Le stock physique ne change que par l'action receiveStock (ou par une expédition)
+  field ( readonly ) ProductId, PlantId, QuantityOnHand, LastUpdatedAt,
+                     AvailableStock, RiskCriticality;
+
+  action receiveStock parameter ZSIM_A_RECEIVESTOCK result [1] $self;
+
+  association _Product;
+  association _Plant { }
+  association _Movements { internal create; }
+
+  mapping for zsim_stock
+  {
+    ProductId      = product_id;
+    PlantId        = plant_id;
+    QuantityOnHand = quantity_on_hand;
+    LastUpdatedAt  = last_updated_at;
+  }
+}
+
+define behavior for ZSIM_I_STOCKMOVEMENT alias StockMovement
+persistent table zsim_stock_mvt
+lock dependent by _Product
+authorization dependent by _Product
+{
+  field ( readonly ) ProductId, PlantId, MovementType, Quantity, StockAfter,
+                     Reference, CreatedBy, CreatedAt;
+  field ( numbering : managed, readonly ) MovementId;
+
+  association _Stock;
+  association _Product;
+
+  mapping for zsim_stock_mvt
+  {
+    MovementId   = movement_id;
+    ProductId    = product_id;
+    PlantId      = plant_id;
+    MovementType = movement_type;
+    Quantity     = quantity;
+    StockAfter   = stock_after;
+    Reference    = reference;
+    CreatedBy    = created_by;
+    CreatedAt    = created_at;
+  }
+}

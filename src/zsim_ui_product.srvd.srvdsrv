@@ -1,0 +1,7 @@
+@EndUserText.label: 'Product Catalog Service'
+define service ZSIM_UI_PRODUCT {
+  expose ZSIM_C_PRODUCT       as Product;
+  expose ZSIM_C_STOCK         as Stock;
+  expose ZSIM_C_STOCKMOVEMENT as StockMovement;
+  expose ZSIM_C_PLANT         as Plant;
+}

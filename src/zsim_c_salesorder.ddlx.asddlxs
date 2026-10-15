@@ -1,0 +1,74 @@
+@Metadata.layer: #CUSTOMER
+
+@UI.headerInfo: {
+  typeName: 'Sales Order',
+  typeNamePlural: 'Sales Orders',
+  title: { type: #STANDARD, value: 'OrderId' }
+}
+
+annotate entity ZSIM_C_SALESORDER with
+{
+  @UI.facet: [
+    { id: 'General', purpose: #STANDARD, type: #IDENTIFICATION_REFERENCE,
+      label: 'General', position: 10 },
+    { id: 'Items', purpose: #STANDARD, type: #LINEITEM_REFERENCE,
+      label: 'Items', position: 20, targetElement: '_Items' }
+  ]
+
+  @EndUserText.label: 'Order'
+  @UI.lineItem:       [ { position: 10, label: 'Order' },
+                        { type: #FOR_ACTION, dataAction: 'confirmOrder', label: 'Confirm' },
+                        { type: #FOR_ACTION, dataAction: 'shipOrder',    label: 'Ship' },
+                        { type: #FOR_ACTION, dataAction: 'cancelOrder',  label: 'Cancel Order' } ]
+  @UI.identification: [ { position: 10, label: 'Order' },
+                        { type: #FOR_ACTION, dataAction: 'confirmOrder', label: 'Confirm' },
+                        { type: #FOR_ACTION, dataAction: 'shipOrder',    label: 'Ship' },
+                        { type: #FOR_ACTION, dataAction: 'cancelOrder',  label: 'Cancel Order' } ]
+  @UI.selectionField: [ { position: 10 } ]
+  OrderId;
+
+  @EndUserText.label: 'Customer'
+  @UI.lineItem:       [ { position: 20, label: 'Customer' } ]
+  @UI.identification: [ { position: 20, label: 'Customer' } ]
+  @UI.selectionField: [ { position: 20 } ]
+  @Consumption.valueHelpDefinition: [ { entity: { name: 'ZSIM_C_CUSTOMER', element: 'CustomerId' } } ]
+  CustomerId;
+
+  @EndUserText.label: 'Plant'
+  @UI.lineItem:       [ { position: 30, label: 'Plant' } ]
+  @UI.identification: [ { position: 30, label: 'Plant' } ]
+  @UI.selectionField: [ { position: 30 } ]
+  @Consumption.valueHelpDefinition: [ { entity: { name: 'ZSIM_C_PLANT', element: 'PlantId' } } ]
+  PlantId;
+
+  @EndUserText.label: 'Order Date'
+  @UI.lineItem:       [ { position: 40, label: 'Order Date' } ]
+  @UI.identification: [ { position: 40, label: 'Order Date' } ]
+  OrderDate;
+
+  @EndUserText.label: 'Total Amount'
+  @UI.lineItem:       [ { position: 45, label: 'Total Amount' } ]
+  @UI.identification: [ { position: 45, label: 'Total Amount' } ]
+  TotalAmount;
+
+  @EndUserText.label: 'Status Code'
+  @UI.selectionField: [ { position: 40 } ]
+  Status;
+
+  @EndUserText.label: 'Status'
+  @UI.lineItem:       [ { position: 50, label: 'Status', criticality: 'StatusCriticality' } ]
+  @UI.identification: [ { position: 50, label: 'Status', criticality: 'StatusCriticality' } ]
+  StatusText;
+
+  @UI.hidden: true
+  Currency;
+
+  @UI.hidden: true
+  StatusCriticality;
+
+  @UI.hidden: true
+  LocalLastChangedAt;
+
+  @UI.hidden: true
+  LastChangedAt;
+}

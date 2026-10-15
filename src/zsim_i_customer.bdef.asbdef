@@ -1,0 +1,11 @@
+managed implementation in class zbp_sim_i_customer unique;
+strict ( 2 );
+
+define behavior for ZSIM_I_CUSTOMER alias Customer
+persistent table zsim_customer
+lock master
+authorization master ( instance )
+
+{
+  field ( readonly ) CustomerId, CustomerName, City, CountryCode;
+}
